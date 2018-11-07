@@ -1,0 +1,6 @@
+#!/bin/bash
+TMPFILE=`mktemp`
+wget "$1" -O $TMPFILE
+mkdir -p /var/www/SITENAME/moodle/lib/editor/atto/plugins
+unzip -d /var/www/SITENAME/moodle/lib/editor/atto/plugins/ $TMPFILE
+rm $TMPFILE

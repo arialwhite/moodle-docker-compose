@@ -1,0 +1,1 @@
+*/5 * * * * php-fpm /usr/bin/php /var/www/SITENAME/moodle/admin/cli/cron.php 2>/proc/1/fd/2 >&2

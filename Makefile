@@ -7,9 +7,11 @@ BACKUP_DIR := ./backup
 HOSTNAME := localhost
 SITENAME := dev
 
-MOODLE_CONFIG_FILE := $(DIST_DIR)/images/moodle/config/moodle-config.php
+MOODLE_CONFIG_FILE := $(DIST_DIR)/images/moodle/config/moodle/moodle-config.php
 MOODLE_DIRECTORY := $(DIST_DIR)/images/moodle
 DOCKER_COMPOSE_FILE := $(DIST_DIR)/docker-compose.yml
+
+export DOCKER_CONTENT_TRUST=1
 
 # Load passwords
 include .secrets

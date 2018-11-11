@@ -81,17 +81,18 @@ RUN mkdir -p /run/php /var/run/apache2 \
  && rm /etc/php/7.2/fpm/pool.d/www.conf
 
 # Copy config
-COPY config/www0.conf /etc/php/7.2/fpm/pool.d/
-COPY config/moodle-config.php /var/www/SITENAME/moodle/config.php
-COPY config/config.inc.php /var/www/SITENAME/phpmyadmin/
-COPY config/localhost.conf /etc/apache2/sites-available/
-COPY config/moodle-cron /etc/cron.d/moodle
+COPY config/php-fpm/www0.conf /etc/php/7.2/fpm/pool.d/
+COPY config/moodle/moodle-config.php /var/www/SITENAME/moodle/config.php
+COPY config/phpmyadmin/config.inc.php /var/www/SITENAME/phpmyadmin/
+COPY config/apache2/localhost.conf /etc/apache2/sites-available/
+COPY config/cron.d/moodle /etc/cron.d/moodle
 
 # Config files permissions
 RUN chown php-fpm:php-fpm /var/www/SITENAME/moodle/config.php \
  && chmod 0400 /var/www/SITENAME/moodle/config.php \
  && chown php-fpm:php-fpm /var/www/SITENAME/phpmyadmin/config.inc.php \
- && chmod 0400 /var/www/SITENAME/phpmyadmin/config.inc.php
+ && chmod 0400 /var/www/SITENAME/phpmyadmin/config.inc.php \
+ && chmod +x /etc/cron.d/*
 
 # Setup httpd server
 RUN a2ensite localhost \

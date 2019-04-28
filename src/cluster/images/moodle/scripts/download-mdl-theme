@@ -1,0 +1,5 @@
+#!/bin/bash
+TMPFILE=`mktemp`
+wget "$1" -O $TMPFILE
+unzip -d /var/www/SITENAME/moodle/theme/ $TMPFILE
+rm $TMPFILE

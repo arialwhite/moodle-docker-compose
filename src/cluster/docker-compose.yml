@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  moodle:
+    image: moodle-php-fpm
+    build: ./images/moodle
+    restart: unless-stopped
+    hostname: moodle
+    ports:
+      - 127.0.0.1:8083:8083
+    depends_on:
+      - "db"
+    volumes:
+      - ./volumes/moodle:/var/moodle
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - 127.0.0.1:8084:80
+    depends_on:
+      - "db"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpressuser
+      WORDPRESS_DB_PASSWORD: MYSQL_PASSWORD_VALUE_B
+      WORDPRESS_DB_NAME: wordpress
+      HTTPS: 'on'
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'https://blog.julianguillotel.fr');
+        define('WP_SITEURL', 'https://blog.julianguillotel.fr');
+    volumes:
+      - ./volumes/wp-content:/var/www/html/wp-content
+      - ./volumes/wp-conf.d/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    hostname: db
+    ports:
+      - 127.0.0.1:3306:3306
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD_VALUE
+    volumes:
+      - ./volumes/initdb.d:/docker-entrypoint-initdb.d
+      - ./volumes/mysql-data:/var/lib/mysql
+      - ./volumes/mysql-conf.d:/etc/mysql/mysql.conf.d
